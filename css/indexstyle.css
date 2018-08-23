@@ -1,0 +1,87 @@
+.boxline{
+	border: 0px solid red;
+}
+#divslt{
+	margin:5px auto;
+}
+.row{
+	margin:5px auto;
+}
+.setcenter{
+	text-align:center;
+}
+#attendid{
+	width:100px;
+}
+.square{
+	width: 34px;
+	height: 34px;
+}
+.aright{
+	position: absolute;
+	right: 50px;
+}
+.showFileName1,.showFileName2{
+	font-size: 16px;
+}
+/*文件上传样式*/
+.uploadfile1,.uploadfile2{
+    position: relative;
+    display: inline-block;
+    background: #D0EEFF;
+    border: 1px solid #99D3F5;
+    border-radius: 4px;
+    padding: 5px 12px;
+    overflow: hidden;
+    color: #1E88C7;
+    text-decoration: none;
+    text-indent: 0;
+    line-height: 20px;
+}
+.uploadfile1 input {
+    position: absolute;
+    font-size: 100px;
+    right: 0;
+    top: 0;
+    opacity: 0;
+}
+.uploadfile2 input {
+    position: absolute;
+    font-size: 100px;
+    right: 0;
+    top: 0;
+    opacity: 0;
+}
+.uploadfile1:hover {
+    background: #AADFFD;
+    border-color: #78C3F3;
+    color: #004974;
+    text-decoration: none;
+}
+.uploadfile2:hover {
+    background: #AADFFD;
+    border-color: #78C3F3;
+    color: #004974;
+    text-decoration: none;
+}
+.uploadbtn1,.uploadbtn2{
+	margin-top: 10px;
+	background: #D0EEFF;
+	color: #1E88C7;
+	border: 1px solid #99D3F5;
+}
+.uploadbtn1:hover {
+    background: #AADFFD;
+    border-color: #78C3F3;
+    color: #004974;
+    text-decoration: none;
+}
+.uploadbtn2:hover {
+    background: #AADFFD;
+    border-color: #78C3F3;
+    color: #004974;
+    text-decoration: none;
+}
+.divform{
+    margin: 20px auto 10px auto;
+}

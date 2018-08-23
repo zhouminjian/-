@@ -1,0 +1,179 @@
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>考勤</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="http://apps.bdimg.com/libs/jqueryui/1.10.4/css/jquery-ui.min.css">
+    <link rel="stylesheet" href="css/indexstyle.css">
+	<script type="application/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="http://apps.bdimg.com/libs/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    <script src="js/jquery-ui-1.10.4.custom.js"></script>
+</head>
+<body onload="load();">
+<div class="aright"><a href="upload/uploaduserinfo.html">上传名单</a>|<a href="upload/uploadattendinfo.html">上传考勤数据</a>|<a href="upload/uploadformat.html">格式化考勤</a></div>
+<div>
+    <h2 class="setcenter"><b>验厂考勤系统</b></h2>
+</div>
+<div class="container boxline divform">
+    <form id="postdiv" name="postdiv" onclick="return false" method="post">
+        <div id="divslt" class="boxline setcenter form-inline">
+            <div class="row row1">
+                <input class="form-control" type="text" id="from1" name="starttime" placeholder="起始日期">
+                <input class="form-control" type="text" id="to1" name="endtime" placeholder="结束日期">
+                <input class="form-control" type="text" id="attendid" name="attendid" placeholder="考勤号码">
+                <select name="groupid" id="groupid" class="form-control">
+                    <option value="0">选择班别</option>
+                    <option value="1">甲班白班</option>
+                    <option value="2">乙班白班</option>
+                </select>
+                <a class="btn btn-primary square" id="btn" onclick="addtr();">+</a>
+            </div>
+        </div>
+        <div class="setcenter divform" id="btnid">
+            <input class="btn btn-primary" id="postbtn" type="button" value="查询">
+            <input class="btn btn-primary" id="exportbtn" type="button" value="导出">
+        </div>
+    </form>
+</div>
+<div class="container" style="margin-top: 100px;width:40%;">
+    <ul style="list-style-type:none;">
+        <span style="font-size:18"><b>填补考勤</b></span>
+        <li><span style="color:red;">注意：</span>先下载模板，按模板格式调整后上传。</li>
+        <li>步骤一：上传人员名单；</li>
+        <li>步骤二：上传考勤软件中导出的考勤记录；</li>
+        <li>步骤三：选择起始和结束日期、班别必填，考勤号码非必填；</li>
+        <li>步骤四：查询完可导出结果为Excel；</li>
+    </ul>
+</div>
+</body>
+<script>
+    var rowNum = 1,idNum = 1;//idNum动态与input的id拼接
+    var rownum = 'row'+idNum;//为防止每行input框class名相同
+    function addtr(){
+        rowNum++; //行号自增
+        idNum++;  //用于拼接的id自增
+        if(rowNum>4){
+            alert("最多支持4个条件");
+            rowNum--;
+            return;
+        }
+        var div = document.createElement("div");
+        rownum = "row"+idNum;
+        div.setAttribute("class","row "+rownum);
+        var fatherdiv = document.getElementById("divslt");
+        div.innerHTML = "<input class='form-control' type='text' id='from"+idNum+"' name='starttime' placeholder='起始日期'> <input class='form-control' type='text' id='to"+idNum+"' name='endtime' placeholder='结束日期'> <input type='text' class='form-control' id='attendid' name='attendid' placeholder='考勤号码'> <select class='form-control' name='groupid' id='groupid'><option value='0'>选择班别</option><option value='1'>甲班白班</option><option value='2'>乙班白班</option></select> <a class='btn btn-primary square' id='btn' onclick='deldiv(this);'>-</a>";
+        fatherdiv.appendChild(div);
+        load();
+    };
+    function deldiv(row){
+        var fdiv = row.parentNode;
+        fdiv.remove();
+        rowNum--;
+    }
+    // $("#postbtn").click(function(){
+    //     console.log($('#postdiv').serializeArray());
+    //     var data = $('#postdiv').serializeArray();
+    //     data = JSON.stringify(data);
+    //     $.post("getinfo.php",{data:data},function(result){
+    //         alert(result);
+    //     });
+    // });
+    var variable = "";
+    $("#postbtn").click(function(){
+        //验证必填项
+        for(var i=0;i<document.postdiv.elements.length-1;i+=4){
+            for(var j=0;j<4;j++){
+                if((document.postdiv.elements[i+j].value==""||document.postdiv.elements[i+j].value==0)&&(i+j)%4!=2){
+                    alert("请将条件填写完整");
+                    document.postdiv.elements[i+j].focus();
+                    return false;
+                }
+            }
+            //判断起始时间与结束时间是否符合逻辑
+            var starttime = document.postdiv.elements[i].value;
+            var endtime = document.postdiv.elements[i+1].value;
+            if(starttime>endtime){
+                alert("起始时间大于结束时间！");
+                document.postdiv.elements[i].focus();
+                return false;
+            }
+        }
+        $("#postbtn").attr("disabled","disabled");
+        console.log($('#postdiv').serializeArray());
+        var data = $('#postdiv').serializeArray();
+        data = JSON.stringify(data);
+        var post_var = {'data':data};
+        $.ajax({
+            type:"POST",
+            url:"getinfo.php",
+            data:post_var,
+            success:function(result){
+                variable = result;
+                alert("查询成功，请导出查看");
+                console.log(result);
+                $("#postbtn").removeAttr("disabled");
+            },
+            error:function(){
+                console.log("提交失败");
+                $("#postbtn").removeAttr("disabled");
+            }
+        });
+    });
+
+    $("#exportbtn").click(function(){
+        if(variable==""){
+            alert("请先查询再导出！");
+        }
+        else{
+            // $.ajax({
+            //     type:"POST",
+            //     url:"export/export.php",
+            //     dataType:"json",
+            //     data:{'data':JSON.stringify(variable)},
+            //     success:function(data){
+            //         alert(data.url);
+            //         // document.location.href="../"+data.url;
+            //     }
+            // });
+            window.location.href = "export/export.php?data=export";
+        }
+    });
+
+    function load(){
+        $(function() {
+            $('.'+rownum+' #from'+idNum).datepicker({
+                dateFormat:"yy/mm/dd",
+                maxDate: 0,
+                changeYear: true,
+                changeMonth: true,
+                showButtonPanel: true
+            });
+        });
+            $(function() {
+            $('.'+rownum+' #to'+idNum).datepicker({
+                dateFormat:"yy/mm/dd",
+                maxDate: 0,
+                changeYear: true,
+                changeMonth: true,
+                showButtonPanel: true
+            });
+        }); 
+        $('.'+rownum+' #from'+idNum).datepicker('enable').attr('readonly','readonly');
+        $('.'+rownum+' #to'+idNum).datepicker('enable').attr('readonly','readonly');
+        var o = document.getElementById("from"+idNum);
+        o.onfocus = function(){
+            this.removeAttribute('placeholder');
+        }; 
+        o.onblur = function(){
+            if(this.value == '') this.setAttribute('placeholder','起始日期');
+        };
+        var p = document.getElementById("to"+idNum);
+        p.onfocus = function(){
+            this.removeAttribute('placeholder');
+        }; 
+        p.onblur = function(){
+            if(this.value == '') this.setAttribute('placeholder','结束日期');
+        }; 
+    } 
+</script>
+</html>

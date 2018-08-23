@@ -1,0 +1,115 @@
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>格式化考勤</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/indexstyle.css">
+	<script type="application/javascript" src="../js/jquery.min.js"></script>
+    <script type="text/javascript" src="http://apps.bdimg.com/libs/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+<body>
+<div class="aright">
+	<a href="../">返回主页</a>|<a href="javascript:void(0);" onclick="format(1);">下载格式化考勤</a>
+</div>
+<div>
+	<h2 class="setcenter"><b>上传修改后的考勤</b></h2>
+</div>
+<div>
+	<p style="text-align: center;">————————————————————————————————————————————————</p>
+	<div class="divform">
+		<form action="uploadphp/uploadformat.php" method="post" enctype="multipart/form-data">
+			<div class="boxline setcenter">
+				<span class="showFileName1"></span>
+				<a href="javascript:;" class="uploadfile1">选择考勤文件
+					<input type="file" name="file1" id="file1">
+				</a>
+			</div>
+			<div class="setcenter">
+				<input class="btn uploadbtn1" id="uploadbtn1" type="submit" value="上传"/>
+			</div>
+		</form>
+	</div>
+	<p style="text-align: center;">————————————————————————————————————————————————</p>
+	<div class="divform">
+		<form action="uploadphp/uploadnumber.php" method="post" enctype="multipart/form-data">
+			<div class="boxline setcenter">
+				<span class="showFileName2"></span>
+				<a href="javascript:;" class="uploadfile2">选择人员编号文件
+					<input type="file" name="file2" id="file2">
+				</a>
+			</div>
+			<div class="setcenter">
+				<input class="btn uploadbtn2" id="uploadbtn2" type="submit" value="上传"/>
+			</div>
+		</form>
+	</div>
+	<p style="text-align: center;">————————————————————————————————————————————————</p>
+</div>
+<div class="container" style="margin-top: 100px;width:40%;">
+    <ul style="list-style-type:none;">
+        <span style="font-size:18"><b>格式化考勤</b></span>
+        <li>步骤一：上传调整后的考勤文件；</li>
+        <li>步骤二：上传从考勤数据库Access中USERINFO表导出的数据；</li>
+        <li>步骤三：下载格式化考勤，下载的文件内容可直接导入/复制到数据库CHECKINOUT表；</li>
+    </ul>
+</div>
+<script>
+//上传1 
+$(".uploadfile1").on("change","input[type='file']",function(){
+	var filePath=$(this).val();
+	if(filePath.indexOf("xls")!=-1 || filePath.indexOf("xlsx")!=-1){
+		var arr=filePath.split('\\');
+		var fileName=arr[arr.length-1];
+		$(".showFileName1").html("文件名:"+fileName);
+	}else{
+		$(".showFileName1").html("");
+		alert("请上传excel文件！");
+		return false;
+	}
+});
+$("#uploadbtn1").click(function(){
+	var files = document.getElementById('file1').files;
+	var fileSize = 0;
+	if(files.length!=0){
+        fileSize = files[0].size;
+    }
+    if(fileSize == 0){
+        alert("未选择任何文件！");
+        return false;
+    }
+    else{
+    	document.getElementById("uploadbtn1").value="正在上传";
+    }
+});
+// 上传2
+$(".uploadfile2").on("change","input[type='file']",function(){
+	var filePath=$(this).val();
+	if(filePath.indexOf("xls")!=-1 || filePath.indexOf("xlsx")!=-1){
+		var arr=filePath.split('\\');
+		var fileName=arr[arr.length-1];
+		$(".showFileName2").html("文件名:"+fileName);
+	}else{
+		$(".showFileName2").html("");
+		alert("请上传excel文件！");
+		return false;
+	}
+});
+$("#uploadbtn2").click(function(){
+	var files = document.getElementById('file2').files;
+	var fileSize = 0;
+	if(files.length!=0){
+        fileSize = files[0].size;
+    }
+    if(fileSize == 0){
+        alert("未选择任何文件！");
+        return false;
+    }
+    else{
+    	document.getElementById("uploadbtn2").value="正在上传";
+    }
+});
+function format(vi){
+	window.location.href = "../common/format.php?data="+vi;
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,72 @@
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>上传名单</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/indexstyle.css">
+	<script type="application/javascript" src="../js/jquery.min.js"></script>
+    <script type="text/javascript" src="http://apps.bdimg.com/libs/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+<body>
+<div class="aright">
+	<a href="../">返回主页</a>|<a href="../download/model/empinfo.xlsx">下载模板</a>
+</div>
+<div>
+	<h2 class="setcenter"><b>上传名单</b></h2>
+</div>
+<div>
+	<form action="uploadphp/uploaduserinfo.php" method="post" enctype="multipart/form-data">
+		<div class="boxline setcenter">
+			<span class="showFileName1"></span>
+			<a href="javascript:;" class="uploadfile1">选择文件
+				<input type="file" name="file1" id="file1">
+			</a>
+		</div>
+		<div class="setcenter">
+			<input class="btn uploadbtn1" id="uploadbtn1" type="submit" value="上传"/>
+		</div>
+	</form>
+</div>
+<script>
+$(".uploadfile1").on("change","input[type='file']",function(){
+	var filePath=$(this).val();
+	if(filePath.indexOf("xls")!=-1 || filePath.indexOf("xlsx")!=-1){
+		var arr=filePath.split('\\');
+		var fileName=arr[arr.length-1];
+		$(".showFileName1").html("文件名:"+fileName);
+	}else{
+		$(".showFileName1").html("");
+		alert("请上传excel文件！");
+		return false;
+	}
+});
+$("#uploadbtn1").click(function(){
+	var files = document.getElementById('file1').files;
+	var fileSize = 0;
+	if(files.length!=0){
+        fileSize = files[0].size;
+    }
+    if(fileSize == 0){
+        alert("未选择任何文件！");
+        return false;
+    }
+    else{
+    	document.getElementById("uploadbtn1").value="正在上传";
+    }
+});
+
+// $("#uploadbtn").click(function(){
+// 	$.ajax({
+// 		type:"POST",
+//         url:"uploadphp/uploadattendinfo.php",
+//         data:"",
+//         success:function(result){
+//             console.log(result);
+//         },
+//         error:function(){
+//             console.log("提交失败");
+//         }
+// 	});
+// });
+</script>
+</body>
+</html>
