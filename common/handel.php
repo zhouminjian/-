@@ -43,6 +43,7 @@ function checkWorkTime($array){
 		$sqlstr1 = "insert into EmpAttendInfo(EmpNumber,SwipeCardTime) select t.EmpNumber,SwipeCardTime from tmp_empattendInfo t,empinfo e where t.EmpNumber=e.EmpNumber and e.EmpType=0 and SwipeCardTime BETWEEN '".$tmp_startTime."' and '".$tmp_nextTime."' order by SwipeCardTime;";
 		$sqlstr2 = "insert into EmpAttendInfo(EmpNumber,SwipeCardTime) select t.EmpNumber,SwipeCardTime from tmp_empattendInfo t,empinfo e where t.EmpNumber=e.EmpNumber and e.EmpType=1 and SwipeCardTime BETWEEN '".$tmp_startTime." 12:00:00' and '".$tmp_nextTime." 12:00:00' order by SwipeCardTime;";
 		$con = $conClass->connectMysql();
+		mysqli_query($con,"set names 'utf8'");
 		mysqli_query($con,$clrsql1);
 		//临时数据复制到考勤信息表EmpAttendInfo
 		mysqli_query($con,$sqlstr1);

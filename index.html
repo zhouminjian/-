@@ -81,8 +81,10 @@
     var variable = "";
     $("#postbtn").click(function(){
         //验证必填项
-        for(var i=0;i<document.postdiv.elements.length-1;i+=4){
+        console.log(document.postdiv.elements.length);
+        for(var i=0;i<document.postdiv.elements.length-3;i+=4){
             for(var j=0;j<4;j++){
+                console.log(document.postdiv.elements[i+j].value);
                 if((document.postdiv.elements[i+j].value==""||document.postdiv.elements[i+j].value==0)&&(i+j)%4!=2){
                     alert("请将条件填写完整");
                     document.postdiv.elements[i+j].focus();

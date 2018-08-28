@@ -2,8 +2,8 @@
 /*
 	导入名单
  */
-if($_FILES["file"]["error"] > 0){
-	echo "<script>alert('上传出错！错误代码：'+".$_FILES['file']['error'].");
+if($_FILES["file1"]["error"] > 0){
+	echo "<script>alert('上传出错！错误代码：'+".$_FILES['file1']['error'].");
 		window.location.href='/nav/upload/uploadattendinfo.html';
 		</script>";
 }
@@ -15,9 +15,9 @@ else{
 	include_once ("../../phpexcel/PHPExcel/IOFactory.php");
 	$objReader = PHPExcel_IOFactory::createReader('Excel2007');
 	//上传到指定目录
-	if(is_uploaded_file($_FILES["file"]["tmp_name"])){
-		$filepath = "../uploadfile/attend/".$_FILES["file"]["name"];
-		if(move_uploaded_file($_FILES["file"]["tmp_name"],$filepath)){
+	if(is_uploaded_file($_FILES["file1"]["tmp_name"])){
+		$filepath = "../uploadfile/attend/".$_FILES["file1"]["name"];
+		if(move_uploaded_file($_FILES["file1"]["tmp_name"],$filepath)){
 			$objPHPExcel = $objReader->load($filepath);
 			$sheet = $objPHPExcel->getSheet(0);
 			$highestRow = $sheet->getHighestRow(); // 取得总行数
